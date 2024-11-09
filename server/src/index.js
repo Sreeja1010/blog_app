@@ -8,7 +8,7 @@ const { blogRouter } = require("./routes/blogRouter");
 
 app.use(express.json());
 app.use(cors({
-    origin: ["http://localhost:5173", "https://blog-application-mu-eight.vercel.app"],
+    origin: ["http://localhost:5173", "https://blog-app-zeta-five-51.vercel.app"],
     credentials: true
 }))
 
