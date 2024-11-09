@@ -3,7 +3,7 @@ import Layout from "../components/Layout";
 import { backend_url } from "../config";
 import axios from 'axios'
 
-const BeautyPage = () => {
+const BeautyPage = () => { 
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
