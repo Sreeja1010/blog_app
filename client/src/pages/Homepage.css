@@ -1,0 +1,35 @@
+/* Styling the flower GIF section */
+.flowers-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px; /* space from top */
+  }
+  
+  /* Floating animation for the flower GIF */
+  .flower {
+    width: 10px; /* Further reduced size of the GIF */
+    height: 10px;
+    border-radius: 50%;
+    animation: float 3s ease-in-out infinite; /* Add the floating animation */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a slight shadow for depth */
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  /* Hover effect */
+  .flower:hover {
+    transform: scale(1.1); /* Slightly enlarge the GIF on hover */
+  }
+  
+  /* Floating animation for the flower GIF */
+  @keyframes float {
+    0% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-5px); /* Smaller floating effect */
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+  
