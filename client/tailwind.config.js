@@ -1,15 +1,11 @@
-module.exports = {
-  content: ["./src/**/*.{js,jsx,ts,tsx}"],
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
   theme: {
-    extend: {
-      fontFamily: {
-        mont: ["Montserrat", "sans-serif"],
-        opensans: ["Open Sans", "sans-serif"],
-      },
-      backgroundImage: {
-        blog: "url('https://i.picsum.photos/id/689/800/500.jpg?hmac=ORj0mXGk17-BciBezkXywFeBM9AIOkQuYWAHrkxltyo')",
-      },
-    },
+    extend: {},
   },
   plugins: [],
-};
+}

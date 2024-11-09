@@ -10,6 +10,8 @@ import techImage from "../assests/technology.jpg";
 import movieImage from "../assests/movie.jpg";
 import newsImage from "../assests/news.jpg";
 import flowerGif1 from "../assests/flower1.gif"; // Example flower GIF import
+import './Homepage.css';
+
 
 export default function Homepage() {
   const [data, setData] = useState([]);

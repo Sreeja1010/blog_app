@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { HashRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import Homepage from "./pages/Homepage";
-import Blog from "./pages/Blog";
-import SingleBlog from "./pages/SingleBlog";
-import FoodPage from "./pages/FoodPage";
-import BeautyPage from "./pages/BeautyPage";
-import TechnologyPage from "./pages/TechnologyPage";
-import NewsPage from "./pages/NewsPage";
-import FitnessPage from "./pages/FitnessPage";
-import Profile from "./pages/Profile";
-import Login from "./pages/Login";
+import Homepage from "./pages/Homepage.jsx";
+import Blog from "./pages/Blog.jsx";
+import SingleBlog from "./pages/SingleBlog.jsx";
+import FoodPage from "./pages/FoodPage.jsx";
+import BeautyPage from "./pages/BeautyPage.jsx";
+import TechnologyPage from "./pages/TechnologyPage.jsx";
+import NewsPage from "./pages/NewsPage.jsx";
+import FitnessPage from "./pages/FitnessPage.jsx";
+import Profile from "./pages/Profile.jsx";
+import Login from "./pages/Login.jsx";
 
 function App() {
   const [user, setUser] = useState(null); // State to store logged-in user
