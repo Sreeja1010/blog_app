@@ -3,58 +3,47 @@ import Layout from "../components/Layout";
 import foodImage from "../assests/food-image0.png";
 import food1Image from "../assests/food1.png";
 import food2Image from "../assests/food2.png"; // Update with actual food image paths
+import { backend_url } from "../config";
+import axios from 'axios'
 
 const FoodPage = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const foodArticles = [
-      {
-        id: 1,
-        title: "The Best Pasta Recipes",
-        body: "Discover how to make the most delicious pasta dishes, from classic to innovative.",
-        category: "Food/Cooking",
-        cover: foodImage,
-        likes: 85,
-        createdAt: "2024-11-01T00:00:00Z",
-        author: "Chef Antonio",
-      },
-      {
-        id: 2,
-        title: "Healthy Meal Prep Ideas",
-        body: "Stay fit and energized with these healthy and easy meal prep options.",
-        category: "Food/Health",
-        cover: food1Image,
-        likes: 72,
-        createdAt: "2024-11-02T00:00:00Z",
-        author: "Nutritionist Maria",
-      },
-      {
-        id: 3,
-        title: "5 Quick Breakfast Recipes",
-        body: "Start your day right with these quick and tasty breakfast ideas.",
-        category: "Food/Breakfast",
-        cover: food2Image,
-        likes: 110,
-        createdAt: "2024-11-03T00:00:00Z",
-        author: "Morning Chef",
-      },
-      // Add more food-related articles as needed
-    ];
-
-    setTimeout(() => {
-      setData(foodArticles);
-      setLoading(false);
-    }, 1000);
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        console.log("Fetching data...");
+        const response = await axios.get(`${backend_url}/api/v1/blogs`);
+        console.log(response.data);
+        
+        // Assuming response.data.getBlog is an array of blogs
+        const filteredData = response.data.getBlog.filter((blog) => blog.category === "food");
+  
+        setData(filteredData); // Update the state with the filtered data
+      } catch (err) {
+        console.log("Catch block");
+        console.error("Error fetching data:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    fetchData();
   }, []);
-
-  const handleLike = (id) => {
-    setData((prevData) =>
-      prevData.map((article) =>
-        article.id === id ? { ...article, likes: article.likes + 1 } : article
-      )
-    );
+  
+  const handleLike = async (id) => {
+    try {
+      const response = await axios.patch(`${backend_url}/api/v1/blogs/${id}`);
+      if (response.status === 200) {
+        alert("Liked.");
+        window.location.reload();  // Reload the page after liking the blog
+      }
+    } catch (err) {
+      console.log(err);
+      alert("Could not like the blog.");
+    }
   };
 
   return (
@@ -65,9 +54,9 @@ const FoodPage = () => {
           <div className="text-center mt-10">Loading...</div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
-            {data.map((article) => (
+            {data.map((article, key) => (
               <article
-                key={article.id}
+                key={article._id}
                 className="border rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-200"
               >
                 <img
@@ -89,7 +78,7 @@ const FoodPage = () => {
                   <div className="flex items-center mt-2">
                     <button
                       className="flex items-center text-pink-500 font-bold mr-2"
-                      onClick={() => handleLike(article.id)}
+                      onClick={() => handleLike(article._id)}
                     >
                       ♥
                     </button>

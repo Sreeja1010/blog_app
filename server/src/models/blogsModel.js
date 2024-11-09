@@ -12,7 +12,7 @@ const BlogSchema = new mongoose.Schema({
     category: {
         type: String,
         required: true,
-        enum: ["fitness", "tech", "tourism", "food"], // predefined categories
+        enum: ["fitness", "tech", "beauty", "food", "tourism"], // predefined categories
     },
     cover: {
         type: String,

@@ -1,61 +1,46 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
 import Layout from "../components/Layout";
-import fitness1Image from "../assests/fitness1.png"; // Corrected path
-import fitness2Image from "../assests/fitness2..png"; // Corrected path
-import fitness3Image from "../assests/fitness3.png"; // Corrected path
+import { backend_url } from "../config";
+import axios from 'axios'
 
 const FitnessPage = () => {
-  const [fitnessArticles, setFitnessArticles] = useState([]);
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const location = useLocation();
 
   useEffect(() => {
-    const fitnessData = [
-      {
-        id: 1,
-        title: "Top 10 Exercises for Beginners",
-        body: "Here are some simple exercises to get you started on your fitness journey...",
-        category: "Fitness",
-        cover: fitness1Image,
-        likes: 45,
-        createdAt: "2024-11-01T00:00:00Z",
-        author: "John Doe",
-      },
-      {
-        id: 2,
-        title: "The Importance of Nutrition in Fitness",
-        body: "Learn how nutrition plays a crucial role in maintaining your fitness goals...",
-        category: "Fitness",
-        cover: fitness2Image,
-        likes: 30,
-        createdAt: "2024-11-05T00:00:00Z",
-        author: "Jane Smith",
-      },
-      {
-        id: 3,
-        title: "Effective Home Workouts",
-        body: "Discover workouts you can do at home with minimal equipment to stay fit...",
-        category: "Fitness",
-        cover: fitness3Image,
-        likes: 70,
-        createdAt: "2024-11-07T00:00:00Z",
-        author: "Alex Brown",
-      },
-    ];
-
-    setTimeout(() => {
-      setFitnessArticles(fitnessData);
-      setLoading(false);
-    }, 1000);
-  }, [location]);
-
-  const handleLike = (id) => {
-    setFitnessArticles((prevData) =>
-      prevData.map((article) =>
-        article.id === id ? { ...article, likes: article.likes + 1 } : article
-      )
-    );
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        console.log("Fetching data...");
+        const response = await axios.get(`${backend_url}/api/v1/blogs`);
+        console.log(response.data);
+        
+        // Assuming response.data.getBlog is an array of blogs
+        const filteredData = response.data.getBlog.filter((blog) => blog.category === "fitness");
+  
+        setData(filteredData); // Update the state with the filtered data
+      } catch (err) {
+        console.log("Catch block");
+        console.error("Error fetching data:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    fetchData();
+  }, []);
+  
+  const handleLike = async (id) => {
+    try {
+      const response = await axios.patch(`${backend_url}/api/v1/blogs/${id}`);
+      if (response.status === 200) {
+        alert("Liked.");
+        window.location.reload();  // Reload the page after liking the blog
+      }
+    } catch (err) {
+      console.log(err);
+      alert("Could not like the blog.");
+    }
   };
 
   return (
@@ -66,9 +51,9 @@ const FitnessPage = () => {
           <div className="text-center mt-10">Loading...</div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
-            {fitnessArticles.map((article) => (
+            {data.map((article, key) => (
               <article
-                key={article.id}
+                key={article._id}
                 className="border rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-200"
               >
                 <img
@@ -90,7 +75,7 @@ const FitnessPage = () => {
                   <div className="flex items-center mt-2">
                     <button
                       className="flex items-center text-pink-500 font-bold mr-2"
-                      onClick={() => handleLike(article.id)}
+                      onClick={() => handleLike(article._id)}
                     >
                       ♥
                     </button>

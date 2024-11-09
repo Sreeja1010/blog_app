@@ -71,4 +71,26 @@ exports.deleteBlog = async (req, res) => {
     }
 }
 
+exports.likeBlog = async (req, res) => {
+    try{
+        const { id } = req.params;
+        const blog = await Blog.findById(id);
+        if (!blog) {
+            return res.status(404).json({ msg: 'Blog not found.' });
+        }
+
+        blog.likes += 1;
+
+        await blog.save();
+        return res.status(200).json({
+            msg : 'Updated Successfully.'
+        })
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            msg : "Internal server error."
+        })
+    }
+}
+
 module.exports = exports;

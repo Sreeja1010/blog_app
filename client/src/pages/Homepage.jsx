@@ -11,61 +11,30 @@ import movieImage from "../assests/movie.jpg";
 import newsImage from "../assests/news.jpg";
 import flowerGif1 from "../assests/flower1.gif"; // Example flower GIF import
 import './Homepage.css';
-
+import { backend_url } from "../config";
+import axios from 'axios'
 
 export default function Homepage() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const staticData = [
-      {
-        id: 1,
-        title: "FOOD",
-        body: "Learn how to cook some delicious recipes that are both easy and satisfying.",
-        cover: foodImage,
-        category: "Food/cooking",
-        likes: 23,
-        createdAt: "2024-10-01T00:00:00Z",
-        author: "Sreeja Gorantla",
-      },
-      {
-        id: 2,
-        title: "Beauty",
-        body: "The Art of Beauty: Embracing Your Unique Radiance",
-        cover: beautyImage,
-        category: "Beauty/cosmetics",
-        likes: 30,
-        createdAt: "2024-09-25T00:00:00Z",
-        author: "Gayathri",
-      },
-      {
-        id: 3,
-        title: "Movie updates",
-        body: "OG was scheduled to release on September 27, 2024, but was postponed due to production delays. It was teased to be released in Summer 2025.",
-        cover: movieImage,
-        category: "Movies",
-        likes: 295,
-        createdAt: "2024-09-20T00:00:00Z",
-        author: "Manasa Kamineni",
-      },
-      {
-        id: 4,
-        title: "News",
-        body: "Latest updates on global news and current events.",
-        cover: newsImage,
-        category: "News",
-        likes: 50,
-        createdAt: "2024-10-05T00:00:00Z",
-        author: "John Doe",
-      },
-    ];
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        console.log("Fetching data...");
+        const response = await axios.get(`${backend_url}/api/v1/blogs`);
+        console.log(response.data);
+        setData(response.data.getBlog); // Store the fetched blogs
+      } catch (err) {
+        console.log("Catch block");
+        console.error("Error fetching data:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    setLoading(true);
-    setTimeout(() => {
-      setData(staticData);
-      setLoading(false);
-    }, 1000);
+    fetchData();
   }, []);
 
   return (
@@ -154,8 +123,8 @@ export default function Homepage() {
             </div>
           )}
           <div className="articles-list mt-6 md:mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
-            {!loading && data.map((article) => (
-              <article key={article.id} className="p-4 bg-gray-200 rounded-lg">
+            {!loading && data.map((article, key) => (
+              <article key={article._id} className="p-4 bg-gray-200 rounded-lg">
                 <img src={article.cover} alt={article.title} className="w-full h-32 object-cover rounded-md" />
                 <h2 className="text-lg font-bold mt-2">{article.title}</h2>
                 <p className="text-sm mt-1">{article.body}</p>
